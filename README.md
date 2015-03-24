@@ -31,6 +31,8 @@ Further information on this project can be found here:
 https://jamesstokebrand.wordpress.com/category/rgb-led-controller-and-node-v1/
 
 
-14 Mar 2015 - Initial Commit 
+
+14 Mar 2015 - Initial Commit
+
 23 Mar 2015 - Added Schematics and Project Cases 
 
