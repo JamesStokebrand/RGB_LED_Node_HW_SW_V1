@@ -40,6 +40,9 @@
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
 
+#define SUPPORT_HSV_COLOR 0
+#define SUPPORT_HSL_COLOR 1
+
 class RgbColor
 {
 public:
@@ -63,11 +66,31 @@ public:
         b=0;
     }
 
+    void set(uint8_t const &R, uint8_t const &G, uint8_t const &B)
+    { 
+        r=R;
+        g=G;
+        b=B;
+    }
+
+    RgbColor& operator=(const RgbColor &rhs) {
+        // Check for self-assignment!
+        if (this == &rhs)      // Same object?
+            return *this;        // Yes, so skip assignment, and just return *this.
+
+        this->r = rhs.r;
+        this->g = rhs.g;
+        this->b = rhs.b;
+
+        return *this;
+    }
+
     uint8_t r;
     uint8_t g;
     uint8_t b;
 };
 
+#if SUPPORT_HSV_COLOR
 class HsvColor
 {
 public:
@@ -76,7 +99,7 @@ public:
         clear();
     }
 
-    HsvColor(double const &H, double const &S, double const &V)
+    HsvColor(uint8_t const &H, uint8_t const &S, uint8_t const &V)
     : h(H)
     , s(S)
     , v(V)
@@ -91,11 +114,32 @@ public:
         v=0;
     }
 
-    double h;
-    double s;
-    double v;
-}; 
+    void set(uint8_t const &H, uint8_t const &S, uint8_t const &V)
+    {
+        h=H;
+        s=S;
+        v=V;
+    }
 
+    HsvColor& operator=(const HsvColor &rhs) {
+        // Check for self-assignment!
+        if (this == &rhs)      // Same object?
+            return *this;        // Yes, so skip assignment, and just return *this.
+
+        this->h = rhs.h;
+        this->s = rhs.s;
+        this->v = rhs.v;
+
+        return *this;
+    }
+
+    uint8_t h;
+    uint8_t s;
+    uint8_t v;
+}; 
+#endif
+
+#if SUPPORT_HSL_COLOR
 class HslColor
 {
 public:
@@ -126,14 +170,31 @@ public:
         l=0;
     }
 
+
+    HslColor& operator=(const HslColor &rhs) {
+        // Check for self-assignment!
+        if (this == &rhs)      // Same object?
+            return *this;        // Yes, so skip assignment, and just return *this.
+
+        this->h = rhs.h;
+        this->s = rhs.s;
+        this->l = rhs.l;
+
+        return *this;
+    }
+
     double h;
     double s;
     double l;
 };
+#endif
+
 
 class RGBConverter {
 
 public:
+
+#if SUPPORT_HSL_COLOR
     /**
      * Converts an RGB color value to HSL. Conversion formula
      * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
@@ -143,7 +204,7 @@ public:
      * @param   RgbColor const &A   The constant RGB color value
      * @param   HslColor &B         The HSL color value
      */
-    void rgbToHsl(RgbColor const &A, HslColor &B);
+    static void rgbToHsl(RgbColor const &A, HslColor &B);
     
     /**
      * Converts an HSL color value to RGB. Conversion formula
@@ -154,34 +215,37 @@ public:
      * @param   HslColor const &A   The constant HSL color value
      * @param   RgbColor &B         The RGB color value
      */
-    void hslToRgb(HslColor const &A, RgbColor &B);
+    static void hslToRgb(HslColor const &A, RgbColor &B);
+#endif
 
+#if SUPPORT_HSV_COLOR
     /**
      * Converts an RGB color value to HSV. Conversion formula
      * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
      * Assumes RgbColor (r, g, and b) are contained in the set [0, 255] and
-     * returns HslColor (h, s, and l) in the set [0, 1].
+     * returns HsvColor (h, s, and v) in the set [0, 255].
      *
-     * @param   RgbColor const &A   The RGB color value
-     * @return  HsvColor &B         The HSV representation
+     * @param   RgbColor const &A   The constant RGB color value
+     * @return  HsvColor &B         The HSV return value
      */
-    void rgbToHsv(RgbColor const &A, HsvColor &B);
+    static void rgbToHsv(RgbColor const &A, HsvColor &B);
     
     /**
      * Converts an HSV color value to RGB. Conversion formula
      * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
-     * Assumes HslColor (h, s, and l) are contained in the set [0, 1] and
+     * Assumes HsvColor (h, s, and v) are contained in the set [0, 255] and
      * returns RgbColor (r, g, and b) in the set [0, 255].
      *
-     * @param   HsvColor const &A   The HSV representation
-     * @return  RgbColor &B         The RGB color value
+     * @param   HsvColor const &A   The constant HSV representation
+     * @return  RgbColor &B         The RGB color return value
      */
-    void hsvToRgb(HsvColor const &A, RgbColor &B);
-     
+    static void hsvToRgb(HsvColor const &A, RgbColor &B);
+#endif
+
 private:
-    double threeway_max(double a, double b, double c);
-    double threeway_min(double a, double b, double c);
-    double hue2rgb(double p, double q, double t);
+    static double threeway_max(double a, double b, double c);
+    static double threeway_min(double a, double b, double c);
+    static double hue2rgb(double p, double q, double t);
 };
 
 #endif

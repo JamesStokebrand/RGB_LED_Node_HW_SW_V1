@@ -100,8 +100,7 @@ CPPSRC += uart_class.cpp
 CPPSRC += comm_class.cpp
 CPPSRC += static_queue.cpp
 CPPSRC += mcu_sleep_class.cpp
-
-
+CPPSRC += state_class.cpp
 
 # List Assembler source files here.
 #     Make them always end in a capital .S.  Files ending in a lowercase .s

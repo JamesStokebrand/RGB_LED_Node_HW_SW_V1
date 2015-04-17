@@ -34,7 +34,7 @@
 
 #include "RGBConverter.h"
 
-
+#if SUPPORT_HSL_COLOR
 /**
  * Converts an RGB color value to HSL. Conversion formula
  * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
@@ -90,6 +90,15 @@ double RGBConverter::hue2rgb(double p, double q, double t) {
     return p;
 }
 
+/**
+ * Converts an HSL color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes RgbColor (r, g, and b) are contained in the set [0, 255] and
+ * returns HslColor (h, s, and l) in the set [0, 1].
+ *
+ * @param   HslColor const &B   The constant HSL color value
+ * @param   RgbColor &A   The RGB color return value
+ */
 void RGBConverter::hslToRgb(HslColor const &A, RgbColor &B) {
     double r, g, b;
     double H = A.h;
@@ -108,14 +117,16 @@ void RGBConverter::hslToRgb(HslColor const &A, RgbColor &B) {
   B.g = g * 255;
   B.b = b * 255;
 }
+#endif
 
+#if SUPPORT_HSV_COLOR
 /**
  * Converts an RGB color value to HSV. Conversion formula
  * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
  * Assumes RgbColor (r, g, and b) are contained in the set [0, 255] and
- * returns HslColor (h, s, and l) in the set [0, 1].
+ * returns HsvColor (h, s, and v) in the set [0, 255]
  *
- * @param   RgbColor const &A   The RGB color value
+ * @param   RgbColor const &A   The constant RGB color value
  * @return  HsvColor &B         The HSV representation
  */
 void RGBConverter::rgbToHsv(RgbColor const &A, HsvColor &B) {
@@ -141,42 +152,49 @@ void RGBConverter::rgbToHsv(RgbColor const &A, HsvColor &B) {
         h /= 6;
     }
 
-    B.h = h;
-    B.s = s;
-    B.v = v;
+    B.h = h * 255;
+    B.s = s * 255;
+    B.v = v * 255;
 }
 
 /**
  * Converts an HSV color value to RGB. Conversion formula
  * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
- * Assumes HslColor (h, s, and l) are contained in the set [0, 1] and
+ * Assumes HsvColor (h, s, and v) are contained in the set [0, 255] and
  * returns RgbColor (r, g, and b) in the set [0, 255].
  *
- * @param   HsvColor const &A   The HSV representation
- * @return  RgbColor &B         The RGB color value
+ * @param   HsvColor const &A   The constant HSV representation
+ * @return  RgbColor &B         The RGB color return value
  */
 void RGBConverter::hsvToRgb(HsvColor const &A, RgbColor &B) {
     double r=0, g=0, b=0;
+    double H=0, S=0, V=0;
 
-    int i = int(A.h * 6);
-    double f = A.h * 6 - i;
-    double p = A.v * (1 - A.s);
-    double q = A.v * (1 - f * A.s);
-    double t = A.v * (1 - (1 - f) * A.s);
+    H = ((double)A.h)*255.0f;
+    S = ((double)A.s)*255.0f;
+    V = ((double)A.v)*255.0f;
+
+
+    uint8_t i = uint8_t(H * 6);
+    double f = H * 6 - i;
+    double p = V * (1 - S);
+    double q = V * (1 - f * S);
+    double t = V * (1 - (1 - f) * S);
 
     switch(i % 6){
-        case 0: r = A.v, g = t, b = p; break;
-        case 1: r = q, g = A.v, b = p; break;
-        case 2: r = p, g = A.v, b = t; break;
-        case 3: r = p, g = q, b = A.v; break;
-        case 4: r = t, g = p, b = A.v; break;
-        case 5: r = A.v, g = p, b = q; break;
+        case 0: r = V, g = t, b = p; break;
+        case 1: r = q, g = V, b = p; break;
+        case 2: r = p, g = V, b = t; break;
+        case 3: r = p, g = q, b = V; break;
+        case 4: r = t, g = p, b = V; break;
+        case 5: r = V, g = p, b = q; break;
     }
 
     B.r = r * 255;
     B.g = g * 255;
     B.b = b * 255;
 }
+#endif
  
 double RGBConverter::threeway_max(double a, double b, double c) {
     return max(a, max(b, c));

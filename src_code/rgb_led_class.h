@@ -71,11 +71,15 @@ public:
     }
 
     void set(RgbColor const &A);
+#if SUPPORT_HSV_COLOR
     void set(HsvColor const &A);
+#endif
     void set(HslColor const &A);
 
     void get(RgbColor &A);
+#if SUPPORT_HSV_COLOR
     void get(HsvColor &A);
+#endif
     void get(HslColor &A);
 
     void RGB_On() 

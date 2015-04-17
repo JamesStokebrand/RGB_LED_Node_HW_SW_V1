@@ -97,18 +97,29 @@ LOCKBIT = 0xFF (valid)
 
 int main(void)
 {
-    // Status LED (Yellow)
-    // Used for debugging
-    //LED_CommonCathode StatusLED(IOPinDefines::E_PinDef::E_PIN_PD2);
+    // Enable MCU sleep
+    mcu_sleep_class::getInstance()->EnableSleep();
+
+    // Enable the status LED to show when the device
+    //  is awake
+    mcu_sleep_class::getInstance()->EnableStatusLED();
+
+    // Try to save more power.  Set these pins as input and enable pullup resistor
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD3);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD4);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB6);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB7);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PC2);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PC1);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PC0);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB2);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB1);
 
     // Event queue 
     EventQueue event_queue;
 
     // Init the Node state machine
     rgb_node_state_machine RGB_Node(&event_queue);
-
-    // Enable MCU sleep
-    mcu_sleep_class::getInstance()->EnableSleep();
 
     sei();
 

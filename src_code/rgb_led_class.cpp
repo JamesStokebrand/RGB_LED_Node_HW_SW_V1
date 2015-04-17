@@ -54,12 +54,14 @@ void rgb_led_class::set(RgbColor const &A)
     HSL_color_valid = false;
 }
 
+#if SUPPORT_HSV_COLOR
 void rgb_led_class::set(HsvColor const &A)
 {
     RgbColor B;
     hsvToRgb(A,B);
     set(B);
 }
+#endif
 
 void rgb_led_class::set(HslColor const &A)
 {
@@ -82,10 +84,12 @@ void rgb_led_class::get(RgbColor &A)
     A.b = RGB_currentColor.b;
 }
 
+#if SUPPORT_HSV_COLOR
 void rgb_led_class::get(HsvColor &A)
 {
     rgbToHsv(RGB_currentColor,A);
 }
+#endif
 
 void rgb_led_class::get(HslColor &A)
 {
