@@ -109,6 +109,9 @@ public:
         _Comm.encode(_temp);
 #endif
 
+        // Disable the node's status LED.
+        mcu_sleep_class::getInstance()->DisableStatusLED();
+
     }
 
     virtual ~rgb_node_state_machine() {}
@@ -242,6 +245,14 @@ _Comm.encode(A);
             case E_FORCE_FEEDBACK:
                 // Send RED PWM value feedback.
                 send_feedback(A.get_current_data(), E_LED_RED_PWM, _RGB_Led.getRed());
+            break;
+            case E_ENABLE_STATUS_LED:
+                // Enable the node's status LED.
+                mcu_sleep_class::getInstance()->EnableStatusLED();
+            break;
+            case E_DISABLE_STATUS_LED:
+                // Disable the node's status LED.
+                mcu_sleep_class::getInstance()->DisableStatusLED();
             break;
             default:
             break;
@@ -380,6 +391,14 @@ _Comm.encode(A);
                 // Send GREEN PWM value feedback.
                 send_feedback(A.get_current_data(), E_LED_GREEN_PWM, _RGB_Led.getGreen());
             break;
+            case E_ENABLE_STATUS_LED:
+                // Enable the node's status LED.
+                mcu_sleep_class::getInstance()->EnableStatusLED();
+            break;
+            case E_DISABLE_STATUS_LED:
+                // Disable the node's status LED.
+                mcu_sleep_class::getInstance()->DisableStatusLED();
+            break;
             default:
             break;
             }
@@ -516,6 +535,14 @@ _Comm.encode(A);
             case E_FORCE_FEEDBACK:
                 // Send BLUE PWM value feedback.
                 send_feedback(A.get_current_data(), E_LED_BLUE_PWM, _RGB_Led.getBlue());
+            break;
+            case E_ENABLE_STATUS_LED:
+                // Enable the node's status LED.
+                mcu_sleep_class::getInstance()->EnableStatusLED();
+            break;
+            case E_DISABLE_STATUS_LED:
+                // Disable the node's status LED.
+                mcu_sleep_class::getInstance()->DisableStatusLED();
             break;
             default:
             break;
@@ -667,6 +694,14 @@ _Comm.encode(A);
                 // Send HUE value feedback.
                 send_feedback(A.get_current_data(), E_LED_HUE_PWM, _RGB_Led.getHue()*255);
             break;
+            case E_ENABLE_STATUS_LED:
+                // Enable the node's status LED.
+                mcu_sleep_class::getInstance()->EnableStatusLED();
+            break;
+            case E_DISABLE_STATUS_LED:
+                // Disable the node's status LED.
+                mcu_sleep_class::getInstance()->DisableStatusLED();
+            break;
             default:
             break;
             }
@@ -817,6 +852,14 @@ _Comm.encode(A);
                 // Send Saturation value feedback.
                 send_feedback(A.get_current_data(), E_LED_SATURATION_PWM, _RGB_Led.getSaturation()*255);
             break;
+            case E_ENABLE_STATUS_LED:
+                // Enable the node's status LED.
+                mcu_sleep_class::getInstance()->EnableStatusLED();
+            break;
+            case E_DISABLE_STATUS_LED:
+                // Disable the node's status LED.
+                mcu_sleep_class::getInstance()->DisableStatusLED();
+            break;
             default:
             break;
             }
@@ -964,6 +1007,14 @@ _Comm.encode(A);
             case E_FORCE_FEEDBACK:
                 // Send Intensity value feedback.
                 send_feedback(A.get_current_data(), E_LED_INTENSITY_PWM, _RGB_Led.getIntensity()*255);
+            break;
+            case E_ENABLE_STATUS_LED:
+                // Enable the node's status LED.
+                mcu_sleep_class::getInstance()->EnableStatusLED();
+            break;
+            case E_DISABLE_STATUS_LED:
+                // Disable the node's status LED.
+                mcu_sleep_class::getInstance()->DisableStatusLED();
             break;
             default:
             break;

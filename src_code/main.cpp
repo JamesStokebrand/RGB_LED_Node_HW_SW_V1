@@ -103,11 +103,7 @@ int main(void)
     // Idle is the default power mode ... but set it anyway.
     mcu_sleep_class::getInstance()->SetSleepMode(mcu_sleep_class::E_MCU_SLEEP_MODE_IDLE);
 
-    // Enable the status LED to show when the device
-    //  is awake
-    mcu_sleep_class::getInstance()->EnableStatusLED();
-
-    // Try to save more power.  Set these pins as input and enable pullup resistor
+    // Try to save more power.  Turn off these pins.
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD3);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD4);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB6);
@@ -118,14 +114,19 @@ int main(void)
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB2);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB1);
 
+    // MCU Programming header.   Only used when programming.  Turn these off also.
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB5);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB4);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB3);
+
     // Event queue 
     EventQueue event_queue;
 
     // Init the Node state machine
     rgb_node_state_machine RGB_Node(&event_queue);
 
-    // RGB Node class has read the 4 pin DIP.  The pins are no longer needed so set 
-    // them as input and enable pullup resistor
+    // RGB Node class has read the 4 pin DIP.  The pins are no longer needed so enable
+    //  power savings.
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD5);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD6);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD7);

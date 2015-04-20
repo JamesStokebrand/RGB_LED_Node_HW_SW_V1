@@ -121,7 +121,7 @@ void mcu_sleep_class::GoMakeSleepNow()
     //   SLEEP_MODE_STANDBY
     //   SLEEP_MODE_EXT_STANDBY
 
-    // select POWER SAVE mode for sleeping
+    // select POWER SAVE mode before sleeping
     switch (_PowerSleepMode)
     {
     case E_MCU_SLEEP_MODE_IDLE:
@@ -188,7 +188,4 @@ void mcu_sleep_class::SetInputAndPullupResistor(IOPinDefines::E_PinDef const &A)
     // Activate pull up resistor
     *(temp._PortReg) |= (1<<temp._Bit);
 }
-
-
-
 
