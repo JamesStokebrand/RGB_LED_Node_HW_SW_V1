@@ -100,6 +100,9 @@ int main(void)
     // Enable MCU sleep
     mcu_sleep_class::getInstance()->EnableSleep();
 
+    // Idle is the default power mode ... but set it anyway.
+    mcu_sleep_class::getInstance()->SetSleepMode(mcu_sleep_class::E_MCU_SLEEP_MODE_IDLE);
+
     // Enable the status LED to show when the device
     //  is awake
     mcu_sleep_class::getInstance()->EnableStatusLED();
@@ -120,6 +123,13 @@ int main(void)
 
     // Init the Node state machine
     rgb_node_state_machine RGB_Node(&event_queue);
+
+    // RGB Node class has read the 4 pin DIP.  The pins are no longer needed so set 
+    // them as input and enable pullup resistor
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD5);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD6);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD7);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB0);
 
     sei();
 
